@@ -1,21 +1,18 @@
 """medapi URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+Because medapi provides a versioned rest api, we can helpfully utilize url
+namespacing to separate versions and applications during reverse url resolution.
 """
-from django.conf.urls import url
-from django.contrib import admin
+from django.conf.urls import include, url
+
+
+api_v1 = [
+    url(r'^trachoma_pgp3_antigen/',
+        include(
+            'trachoma_pgp3_antigen.urls',
+            namespace='trachoma_pgp3_antigen'))
+]
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/', include(api_v1, namespace='api_v1'))
 ]
