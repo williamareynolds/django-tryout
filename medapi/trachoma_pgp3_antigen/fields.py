@@ -29,7 +29,7 @@ QUALITATIVE_VALUE_VALIDATOR = RegexValidator(
 
 COMBINED_QUALITATIVE_VALUE_VALIDATOR = RegexValidator(
     regex=r'^(\+|\?|\-)\.(\+|\?|\-)$',
-    message='Combinde qualitative values must be a combination of two '
+    message='Combined qualitative values must be a combination of two '
             'qualitative values separated by a single "." (period). '
             'See the lfa.3 description at '
             'https://data.cdc.gov/Global-Health/Tests-for-antibodies-to-'
@@ -45,7 +45,8 @@ def qualitative_field():
     :return:
     :rtype: models.CharField
     """
-    return models.CharField(choices=QUALITATIVE_VALUES,
+    return models.CharField(max_length=1,
+                            choices=QUALITATIVE_VALUES,
                             null=True,
                             validators=[QUALITATIVE_VALUE_VALIDATOR])
 
@@ -56,7 +57,8 @@ def combined_qualitative_field():
     :return:
     :rtype: models.CharField
     """
-    return models.CharField(choices=COMBINED_QUALITATIVE_VALUES,
+    return models.CharField(max_length=3,
+                            choices=COMBINED_QUALITATIVE_VALUES,
                             validators=[
                                 COMBINED_QUALITATIVE_VALUE_VALIDATOR
                             ],

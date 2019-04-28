@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from fields import qualitative_field, combined_qualitative_field
 
@@ -14,17 +16,6 @@ class Sample(models.Model):
     for more detail and field descriptions. Please note that age has been
     excluded from this data set.
     """
-    SEXES = (
-        (1, 'Male'),
-        (2, 'Female'),
-    )
-
-    SEX_VALIDATOR = RegexValidator(
-        regex=r'^(1|2)$',
-        message='Sex should be 1 (male), 2 (female), or null (not specified).',
-        code='invalid_sex'
-    )
-
     AGE_CATEGORY_VALIDATOR = RegexValidator(
         regex=r'^(\(|\[)\d{1,3},\d{1,3}(\)|\])$',
         message='age_f must be null or provided in interval notation. See '
@@ -33,14 +24,23 @@ class Sample(models.Model):
         code='invalid_age_category'
     )
 
-    sex = models.PositiveSmallIntegerField(choices=SEXES,
-                                           null=True,
-                                           validators=[SEX_VALIDATOR])
+    SEXES = (
+        (1, 'Male'),
+        (2, 'Female'),
+    )
+
+    sex = models.PositiveSmallIntegerField(
+        choices=SEXES,
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(2)]
+    )
     age = models.PositiveSmallIntegerField(null=True)
-    age_f = models.CharField(max_length=9,
-                             null=True,
-                             verbose_name='age category',
-                             validators=[AGE_CATEGORY_VALIDATOR])
+    age_f = models.CharField(
+        max_length=9,
+        null=True,
+        verbose_name='age category',
+        validators=[AGE_CATEGORY_VALIDATOR]
+    )
     luminex_mfi = models.IntegerField()
     luminex = qualitative_field()
     luminex_dx = qualitative_field()
