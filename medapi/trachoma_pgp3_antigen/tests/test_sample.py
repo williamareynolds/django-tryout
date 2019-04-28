@@ -2,34 +2,14 @@ from decimal import Decimal
 from django.test import TestCase
 from helpers import valid_string_failure_message, invalid_string_failure_message
 from ..models import Sample
+from mock_samples import MOCKS
 
 
 class SampleTest(TestCase):
     """This class will test the basic functionality of the Sample model."""
 
     def setUp(self):
-        Sample.objects.create(
-            sex=1,
-            age=7,
-            age_f='(0,10]',
-            luminex_mfi=24000,
-            luminex='+',
-            luminex_dx='-',
-            elisa_od=4.242,
-            elisa='?',
-            elisa_dx='+',
-            elisa_dx_mt='-',
-            elisa_pre_od=1.329,
-            elisa_pre='+',
-            elisa_pre_dx='+',
-            elisa_pre_dx_mt='?',
-            lfa_serum='-',
-            lfa_blood='+',
-            lfa_3='-.+',
-            lfa_serum_2='-',
-            lfa_blood_2='?',
-            lfa_2='-.?'
-        )
+        Sample.objects.create(**MOCKS['mixed'])
 
     def test_sample_contains_desired_properties(self):
         sample = Sample.objects.first()
