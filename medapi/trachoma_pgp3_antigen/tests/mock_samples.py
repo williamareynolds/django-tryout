@@ -21,7 +21,7 @@ MOCKS = {
         'lfa_blood_2': '?',
         'lfa_2': '-.?'
     },
-    'postive': {
+    'positive': {
         'sex': 2,
         'age': 18,
         'age_f': '(10,20]',

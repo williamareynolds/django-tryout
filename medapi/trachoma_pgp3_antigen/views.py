@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 from models import Sample
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.status import HTTP_404_NOT_FOUND
 from serializers import SampleSerializer
 
 
@@ -15,7 +15,12 @@ def index_create_sample(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        return Response({})
+        serializer = SampleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -24,7 +29,7 @@ def read_update_delete_sample(request, id):
         sample = Sample.objects.get(id=id)
     except Sample.DoesNotExist:
         # DoesNotExist shouldn't hinder execution
-        return Response(status=HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = SampleSerializer(sample)
