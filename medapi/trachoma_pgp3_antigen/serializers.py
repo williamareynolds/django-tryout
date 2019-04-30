@@ -6,6 +6,7 @@ class SampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sample
         fields = (
+            'id',
             'sex',
             'age',
             'age_f',

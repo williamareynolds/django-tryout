@@ -13,6 +13,7 @@ class SampleTest(TestCase):
 
     def test_sample_contains_desired_properties(self):
         sample = Sample.objects.first()
+        self.assertEqual(sample.id, 1)
         self.assertEqual(sample.sex, 1)
         self.assertEqual(sample.age, 7)
         self.assertEqual(sample.age_f, '(0,10]')
