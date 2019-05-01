@@ -36,7 +36,12 @@ def read_update_delete_sample(request, id):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        return Response({})
+        serializer = SampleSerializer(sample, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         return Response({})
