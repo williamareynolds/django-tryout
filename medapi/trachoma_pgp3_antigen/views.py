@@ -44,4 +44,5 @@ def read_update_delete_sample(request, id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        return Response({})
+        sample.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

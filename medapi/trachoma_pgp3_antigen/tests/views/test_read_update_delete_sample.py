@@ -99,3 +99,35 @@ class UpdateSampleTest(TestCase):
             unexpected_status_code_message(response.status_code,
                                            status.HTTP_400_BAD_REQUEST)
         )
+
+
+class DeleteSampleTest(TestCase):
+    """Test deleting a Sample"""
+    def setUp(self):
+        self.sample = Sample.objects.create(**MOCKS['positive'])
+
+    def test_delete_existing_sample(self):
+        pre_delete_sample_count = Sample.objects.count()
+        response = client.delete(
+            reverse(URL_NAME, kwargs={'id': self.sample.id})
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_204_NO_CONTENT,
+            unexpected_status_code_message(response.status_code,
+                                           status.HTTP_204_NO_CONTENT)
+        )
+        self.assertEqual(
+            pre_delete_sample_count - 1,
+            Sample.objects.count(),
+            'The delete operation failed to decrease the number of samples.'
+        )
+
+    def test_delete_nonexistant_sample(self):
+        response = client.delete(reverse(URL_NAME, kwargs={'id': 99999}))
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_404_NOT_FOUND,
+            unexpected_status_code_message(response.status_code,
+                                           status.HTTP_404_NOT_FOUND)
+        )
