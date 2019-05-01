@@ -25,17 +25,18 @@ SECRET_KEY = 'mel@!ewbvg21sn366z7mt6q2+de+y!wu2-!c87)sphy90dyc25'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "::1",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'trachoma_pgp3_antigen',
     'rest_framework',
@@ -129,5 +130,4 @@ REST_FRAMEWORK = {
         # Explicitly declare unauthenticated/unauthorized access
         'rest_framework.permissions.AllowAny',
     ],
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
